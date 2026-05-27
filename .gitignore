@@ -1,0 +1,17 @@
+# Mac
+.DS_Store
+**/.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
+# The internal delivery zip — Vercel doesn't need to ship this
+_delivery/
+
+# Python scratch
+*.pyc
+__pycache__/
