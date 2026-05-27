@@ -2,6 +2,47 @@
 // WE AID INITIATIVE — site behaviour (with full EN/HA translation)
 // =====================================================
 
+// ---------- Copy-to-clipboard for account numbers ----------
+(function initCopyButtons() {
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+    const value = btn.dataset.copy;
+    if (!value) return;
+    try {
+      await navigator.clipboard.writeText(value);
+    } catch (err) {
+      // Fallback for older browsers / non-https
+      const tmp = document.createElement('textarea');
+      tmp.value = value;
+      tmp.style.position = 'fixed'; tmp.style.opacity = '0';
+      document.body.appendChild(tmp);
+      tmp.select();
+      try { document.execCommand('copy'); } catch (e2) {}
+      document.body.removeChild(tmp);
+    }
+    // Visual feedback on the button
+    const original = btn.textContent;
+    btn.textContent = '✓';
+    btn.classList.add('is-copied');
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove('is-copied');
+    }, 1800);
+    // Toast
+    const toast = document.getElementById('copy-toast');
+    if (toast) {
+      const isHa = document.documentElement.lang === 'ha';
+      toast.textContent = isHa
+        ? `An kwafe lambar asusu: ${value}`
+        : `Account number copied: ${value}`;
+      toast.classList.add('is-visible');
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => toast.classList.remove('is-visible'), 2200);
+    }
+  });
+})();
+
 // ---------- Scroll-triggered reveal animations ----------
 // Auto-tags eligible elements with .reveal / .reveal-stagger and watches with IntersectionObserver.
 // Honours prefers-reduced-motion (CSS already handles the fallback).
