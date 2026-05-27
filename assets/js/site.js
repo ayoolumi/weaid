@@ -2,6 +2,71 @@
 // WE AID INITIATIVE — site behaviour (with full EN/HA translation)
 // =====================================================
 
+// ---------- Hero photo carousel (Ken Burns + cross-fade) ----------
+// Reads image URLs from #hero-carousel[data-hero-images] (comma-separated).
+// Gracefully degrades: if no images load, the navy gradient background stays in place.
+(function initHeroCarousel() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.getElementById('hero-carousel');
+    if (!root) return;
+    const list = (root.dataset.heroImages || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!list.length) return;
+
+    // Pre-validate that each image actually loads
+    const validUrls = new Set();
+    let pending = list.length;
+    list.forEach(url => {
+      const img = new Image();
+      img.onload  = () => { validUrls.add(url); if (--pending === 0) build(); };
+      img.onerror = () => { if (--pending === 0) build(); };
+      img.src = url;
+    });
+
+    function build() {
+      const ordered = list.filter(u => validUrls.has(u));
+      if (!ordered.length) return; // no valid images — keep the gradient fallback
+      ordered.forEach((url, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'hero-slide' + (i === 0 ? ' is-active' : '');
+        slide.style.backgroundImage = `url("${url}")`;
+        root.appendChild(slide);
+      });
+      const dots = document.getElementById('hero-dots');
+      const dotButtons = [];
+      if (dots) {
+        ordered.forEach((_, i) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.setAttribute('aria-label', `Go to slide ${i+1}`);
+          if (i === 0) b.classList.add('is-active');
+          b.addEventListener('click', () => show(i, true));
+          dots.appendChild(b);
+          dotButtons.push(b);
+        });
+      }
+      let current = 0;
+      const slides = root.querySelectorAll('.hero-slide');
+      let timer = setInterval(() => show((current + 1) % slides.length), 6500);
+
+      function show(idx, fromClick) {
+        if (idx === current) return;
+        slides[current].classList.remove('is-active');
+        if (dotButtons[current]) dotButtons[current].classList.remove('is-active');
+        current = idx;
+        const next = slides[current];
+        next.classList.remove('is-active');
+        void next.offsetWidth; // force reflow so Ken Burns restarts
+        next.classList.add('is-active');
+        if (dotButtons[current]) dotButtons[current].classList.add('is-active');
+        if (fromClick) {
+          clearInterval(timer);
+          timer = setInterval(() => show((current + 1) % slides.length), 6500);
+        }
+      }
+    }
+  });
+})();
+
 // ---------- Mobile nav ----------
 document.addEventListener('click', (e) => {
   const toggle = e.target.closest('.nav-toggle');

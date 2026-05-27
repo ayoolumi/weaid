@@ -46,7 +46,11 @@
 </header>
 
 <!-- ============ HERO ============ -->
-<section class="hero">
+<section class="hero" id="hero">
+ <!-- Photo carousel layer — JS injects slides based on data-hero-images -->
+ <div class="hero-carousel" id="hero-carousel"
+      data-hero-images="assets/img/hero/01.jpg,assets/img/hero/02.jpg,assets/img/hero/03.jpg,assets/img/hero/04.jpg,assets/img/hero/05.jpg,assets/img/hero/06.jpg"></div>
+ <div class="hero-overlay"></div>
  <div class="container">
  <span class="eyebrow"><span class="i18n-en">Civic-Tech · Governance · Climate · Justice</span><span class="i18n-ha">Fasahar Zamantakewa · Shugabanci · Yanayi · Adalci</span></span>
  <h1><span class="i18n-en">Empowering citizens.</span><span class="i18n-ha">Karfafa 'yan kasa.</span><br><span class="i18n-en">Strengthening accountability.</span><span class="i18n-ha">Karfafa rikon amana.</span><br><span class="i18n-en">Driving sustainable change.</span><span class="i18n-ha">Kawo sauyi mai dorewa.</span></h1>
@@ -66,6 +70,7 @@
  <div><strong>2018</strong><span class="i18n-en">Founded</span><span class="i18n-ha">An kafa</span></div>
  </div>
  </div>
+ <div class="hero-dots" id="hero-dots" aria-label="Hero photo controls"></div>
 </section>
 
 <!-- ============ IMPACT STATS (overlapping cards) ============ -->
