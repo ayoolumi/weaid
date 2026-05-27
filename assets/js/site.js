@@ -46,7 +46,7 @@
       }
       let current = 0;
       const slides = root.querySelectorAll('.hero-slide');
-      let timer = setInterval(() => show((current + 1) % slides.length), 6500);
+      let timer = setInterval(() => show((current + 1) % slides.length), 30000);
 
       function show(idx, fromClick) {
         if (idx === current) return;
@@ -60,7 +60,7 @@
         if (dotButtons[current]) dotButtons[current].classList.add('is-active');
         if (fromClick) {
           clearInterval(timer);
-          timer = setInterval(() => show((current + 1) % slides.length), 6500);
+          timer = setInterval(() => show((current + 1) % slides.length), 30000);
         }
       }
     }

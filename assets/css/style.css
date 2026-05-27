@@ -248,8 +248,8 @@ p { margin: 0 0 1em; }
 }
 .hero-slide.is-active {
   opacity: 1;
-  /* Ken Burns: slow zoom-in while the slide is showing */
-  animation: kenburns 9s ease-out forwards;
+  /* Ken Burns: slow zoom-in across the full 30s slide duration */
+  animation: kenburns 30s ease-out forwards;
 }
 @keyframes kenburns {
   from { transform: scale(1.08); }
@@ -266,16 +266,16 @@ p { margin: 0 0 1em; }
 .hero-overlay {
   position: absolute; inset: 0; z-index: 1;
   background:
-    linear-gradient(120deg, rgba(13,27,42,.85) 0%, rgba(13,27,42,.55) 55%, rgba(13,27,42,.75) 100%),
-    radial-gradient(800px 400px at 80% 0%, rgba(192,57,43,.18), transparent 60%);
+    linear-gradient(120deg, rgba(13,27,42,.94) 0%, rgba(13,27,42,.78) 55%, rgba(13,27,42,.88) 100%),
+    radial-gradient(900px 500px at 80% 0%, rgba(192,57,43,.22), transparent 60%);
   pointer-events: none;
 }
 
 /* The hero content must sit above the carousel + overlay */
 .hero > .container { position: relative; z-index: 2; }
 
-.hero h1 { color: #fff; max-width: 18ch; }
-.hero .lead { color: #e6ebf3; max-width: 60ch; font-size: 1.18rem; text-shadow: 0 1px 8px rgba(0,0,0,.25); }
+.hero h1 { color: #fff; max-width: 18ch; text-shadow: 0 2px 16px rgba(0,0,0,.35); }
+.hero .lead { color: #e6ebf3; max-width: 60ch; font-size: 1.18rem; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .hero-meta { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 32px; color: #cfd6e0; font-size: .92rem; }
 .hero-meta strong { color: #fff; font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; display: block; }
