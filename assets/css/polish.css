@@ -1,0 +1,384 @@
+/* ==========================================================================
+   WE AID INITIATIVE — Premium polish layer
+   World-class micro-interactions, hover effects, scroll animations
+   ========================================================================== */
+
+/* ---------- 1. Smoother transition defaults ---------- */
+*, *::before, *::after {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Smooth scrolling everywhere */
+html { scroll-behavior: smooth; }
+
+/* Custom selection colour (matches the brand) */
+::selection {
+  background: var(--red);
+  color: #fff;
+}
+
+/* ---------- 2. Focus rings (accessibility + premium feel) ---------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(192, 57, 43, 0.45);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- 3. Primary-nav refined underline animation ---------- */
+.primary-nav a {
+  position: relative;
+  transition: color 0.25s ease;
+}
+.primary-nav a::after {
+  content: "";
+  position: absolute;
+  left: 12px; right: 12px; bottom: 4px;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.primary-nav a:hover::after,
+.primary-nav a.active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.primary-nav a:hover {
+  background: transparent;
+  color: var(--red);
+}
+/* Don't apply the underline to the Donate CTA button */
+.primary-nav a.cta-donate::after { display: none; }
+
+/* ---------- 4. Buttons: refined hover with shine + lift ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.3s, background-color 0.25s, color 0.25s, border-color 0.25s;
+  will-change: transform;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  transition: left 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.btn:hover::before { left: 130%; }
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0);
+  transition: transform 0.05s;
+}
+.btn-primary:hover {
+  box-shadow: 0 14px 30px rgba(192, 57, 43, 0.35), 0 4px 10px rgba(192, 57, 43, 0.18);
+}
+.btn-dark:hover {
+  box-shadow: 0 14px 30px rgba(13, 27, 42, 0.35), 0 4px 10px rgba(13, 27, 42, 0.18);
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- 5. Card hover: lift + glow + accent rail ---------- */
+.card {
+  position: relative;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease,
+    border-color 0.25s ease;
+  will-change: transform;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 0; height: 4px;
+  background: linear-gradient(90deg, var(--red), #E55A4A);
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 48px -12px rgba(13, 27, 42, 0.18),
+    0 0 0 1px rgba(192, 57, 43, 0.08);
+  border-color: transparent;
+}
+.card:hover::before { width: 100%; }
+.card .icon {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s;
+}
+.card:hover .icon {
+  transform: scale(1.1) rotate(-3deg);
+  background: var(--red);
+  color: #fff;
+}
+.card .more {
+  display: inline-block;
+  transition: transform 0.25s ease, color 0.2s;
+}
+.card:hover .more {
+  transform: translateX(6px);
+}
+
+/* ---------- 6. Stat cards: subtle counter pulse + accent shimmer ---------- */
+.stat {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s;
+}
+.stat:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px -8px rgba(13, 27, 42, 0.18);
+}
+.stat .num {
+  background: linear-gradient(135deg, var(--navy) 0%, #2b3e5c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- 7. Feature initiative blocks: refined image hover ---------- */
+.feature-media {
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 0.4s;
+}
+.feature-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(13, 27, 42, 0.25) 100%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.feature-media img,
+.feature-media .placeholder-img {
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.feature:hover .feature-media img,
+.feature:hover .feature-media .placeholder-img {
+  transform: scale(1.04);
+}
+.feature:hover .feature-media::after { opacity: 1; }
+.feature:hover .feature-media {
+  box-shadow: 0 20px 40px -10px rgba(13, 27, 42, 0.2);
+}
+
+/* ---------- 8. Pills get a subtle hover ---------- */
+.pill {
+  transition: transform 0.2s ease, background-color 0.2s, color 0.2s;
+}
+a:hover .pill,
+.card:hover .pill {
+  transform: translateY(-1px);
+}
+
+/* ---------- 9. Brand logo hover (subtle) ---------- */
+.brand {
+  transition: opacity 0.2s ease;
+}
+.brand:hover { opacity: 0.85; }
+.brand img.brand-logo {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.brand:hover img.brand-logo { transform: scale(1.03); }
+
+/* ---------- 10. Footer link hover ---------- */
+.site-footer a {
+  position: relative;
+  transition: color 0.2s, padding-left 0.25s;
+}
+.footer-grid li a:hover {
+  color: #fff;
+  padding-left: 6px;
+}
+.footer-grid li a::before {
+  content: "→";
+  position: absolute;
+  left: -14px;
+  opacity: 0;
+  transition: opacity 0.2s, left 0.25s;
+  color: var(--red);
+}
+.footer-grid li a:hover::before {
+  opacity: 1;
+  left: -10px;
+}
+
+/* ---------- 11. Partner logos: subtle hover ---------- */
+.partner {
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
+  cursor: default;
+}
+.partner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px rgba(13, 27, 42, 0.16);
+  border-color: var(--red);
+  color: var(--navy);
+}
+
+/* ---------- 12. CTA strip with subtle animated background ---------- */
+.cta-strip {
+  position: relative;
+  overflow: hidden;
+}
+.cta-strip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.10) 0%, transparent 40%);
+  animation: ctaShimmer 14s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes ctaShimmer {
+  0%, 100% { transform: translate(0, 0); opacity: 0.9; }
+  50% { transform: translate(2%, -2%); opacity: 1; }
+}
+
+/* ---------- 13. Form fields: refined focus ---------- */
+.form-field input,
+.form-field select,
+.form-field textarea {
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s;
+}
+.form-field input:hover,
+.form-field select:hover,
+.form-field textarea:hover {
+  border-color: #bbb;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--red);
+  box-shadow:
+    0 0 0 4px rgba(192, 57, 43, 0.12),
+    0 6px 16px -4px rgba(192, 57, 43, 0.18);
+}
+
+/* ---------- 14. The Citizen status flow steps: ripple on hover ---------- */
+.status-step {
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  cursor: default;
+}
+.status-step:hover {
+  transform: translateY(-2px);
+  border-color: var(--red);
+  box-shadow: 0 12px 28px -8px rgba(192, 57, 43, 0.18);
+}
+
+/* ---------- 15. Reports table rows: smooth row highlight ---------- */
+.reports-table tbody tr {
+  transition: background-color 0.2s;
+}
+.reports-table tbody tr:hover {
+  background: var(--bg-soft);
+}
+
+/* ---------- 16. Page-hero refinement (interior pages) ---------- */
+.page-hero {
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::after {
+  content: "";
+  position: absolute;
+  right: -150px; top: 50%;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192, 57, 43, 0.18) 0%, transparent 70%);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* ---------- 17. Hero dots: refined hover ---------- */
+.hero-dots button {
+  transition: background 0.3s, transform 0.3s, width 0.3s;
+}
+.hero-dots button.is-active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--red);
+  transform: none;
+}
+
+/* ---------- 18. Language switch refined ---------- */
+.lang-switch button {
+  transition: background 0.25s, color 0.25s, transform 0.15s;
+}
+.lang-switch button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+.lang-switch button:active { transform: scale(0.95); }
+
+/* ---------- 19. Scroll-triggered reveal animations ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Stagger children: add delay based on position */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.0s; }
+.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.08s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.16s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.24s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.32s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; }
+.reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- 20. Eyebrow micro-detail ---------- */
+.eyebrow {
+  position: relative;
+  padding-left: 24px;
+}
+.eyebrow::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 50%; transform: translateY(-50%);
+  width: 16px; height: 2px;
+  background: var(--red);
+}
+
+/* ---------- 21. Section-soft to section transition seam ---------- */
+.section-soft + .section,
+.section + .section-soft {
+  position: relative;
+}
+
+/* ---------- 22. Honour reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal, .reveal-stagger > * { opacity: 1; transform: none; }
+}

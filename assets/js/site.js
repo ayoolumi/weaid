@@ -2,6 +2,41 @@
 // WE AID INITIATIVE — site behaviour (with full EN/HA translation)
 // =====================================================
 
+// ---------- Scroll-triggered reveal animations ----------
+// Auto-tags eligible elements with .reveal / .reveal-stagger and watches with IntersectionObserver.
+// Honours prefers-reduced-motion (CSS already handles the fallback).
+(function initScrollReveal() {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Auto-add .reveal to common section primitives so we don't have to touch every page
+    document.querySelectorAll('.section-head, .feature, .prose, blockquote, .cta-strip, .page-hero .lead').forEach(el => {
+      if (!el.classList.contains('reveal') && !el.classList.contains('reveal-stagger')) {
+        el.classList.add('reveal');
+      }
+    });
+    // Stagger card grids
+    document.querySelectorAll('.section .grid, .section-soft .grid').forEach(grid => {
+      // Only stagger grids that hold cards/articles (not feature media etc.)
+      const isCardGrid = grid.querySelector(':scope > .card, :scope > article, :scope > .stat, :scope > .partner');
+      if (isCardGrid) grid.classList.add('reveal-stagger');
+    });
+
+    if (!('IntersectionObserver' in window)) {
+      // Old browser fallback — just show everything
+      document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => obs.observe(el));
+  });
+})();
+
 // ---------- Hero photo carousel (Ken Burns + cross-fade) ----------
 // Reads image URLs from #hero-carousel[data-hero-images] (comma-separated).
 // Gracefully degrades: if no images load, the navy gradient background stays in place.
