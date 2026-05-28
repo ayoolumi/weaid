@@ -62,9 +62,32 @@
         <p><strong><span class="i18n-en">Civic-tech</span><span class="i18n-ha">Fasahar zamantakewa</span> volunteer — Remote.</strong> Front-end, back-end, mobile or content roles supporting <span class="i18n-en">The Citizen platform</span><span class="i18n-ha">Dandalin Mai Kasa</span>.</p>
         <p><strong>Translation volunteer — Remote.</strong> English-Hausa translation of civic education content.</p>
       </div>
-      <aside class="card">
-        <h3><span class="i18n-en">Apply</span><span class="i18n-ha">Yi nema</span></h3>
-        <p>Send your CV and a short note to <a href="mailto:info@weaidinitiative.org">info@weaidinitiative.org</a> with the role title in the subject line.</p>
+      <aside>
+        <h3><span class="i18n-en">Apply to volunteer</span><span class="i18n-ha">Nema don sa kai</span></h3>
+        <p style="color:var(--slate);"><span class="i18n-en">Fill in the form below and we'll be in touch within a few days.</span><span class="i18n-ha">Cika fom din kasa kuma za mu tuntube ka cikin 'yan kwanaki.</span></p>
+        <div id="volunteer-confirm" style="display:none; padding:16px; border-radius:10px; background:#E3F4E9; color:#1E7C3A; margin:14px 0;"></div>
+        <form id="volunteer-form" class="card" action="https://formspree.io/f/xgoqdnbn" method="POST">
+          <input type="hidden" name="_subject" value="Volunteer Application — We Aid Initiative">
+          <input type="hidden" name="form_type" value="Volunteer application">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute; left:-5000px; opacity:0; pointer-events:none;" aria-hidden="true">
+          <div class="form-field"><label for="vname"><span class="i18n-en">Your name</span><span class="i18n-ha">Sunan ka</span></label><input id="vname" name="name" type="text" required></div>
+          <div class="form-field"><label for="vemail"><span class="i18n-en">Email</span><span class="i18n-ha">Imel</span></label><input id="vemail" name="email" type="email" required></div>
+          <div class="form-field"><label for="vphone"><span class="i18n-en">Phone (optional)</span><span class="i18n-ha">Waya (na zabi)</span></label><input id="vphone" name="phone" type="tel"></div>
+          <div class="form-field"><label for="vrole"><span class="i18n-en">Role you're applying for</span><span class="i18n-ha">Matsayin da kake nema</span></label>
+            <select id="vrole" name="role" required>
+              <option value="">Choose a role…</option>
+              <option value="Field volunteer — Bauchi State">Field volunteer — Bauchi State</option>
+              <option value="Policy research volunteer — Remote">Policy research volunteer — Remote</option>
+              <option value="Civic-tech volunteer — Remote">Civic-tech volunteer — Remote</option>
+              <option value="Translation volunteer — Remote (EN ↔ HA)">Translation volunteer — Remote (EN ↔ HA)</option>
+              <option value="Other / general interest">Other / general interest</option>
+            </select>
+          </div>
+          <div class="form-field"><label for="vlocation"><span class="i18n-en">Where are you based?</span><span class="i18n-ha">Ina ka ke?</span></label><input id="vlocation" name="location" type="text" placeholder="e.g. Bauchi, Nigeria"></div>
+          <div class="form-field"><label for="vmsg"><span class="i18n-en">Tell us a bit about yourself</span><span class="i18n-ha">Gaya mana kadan game da kanka</span></label><textarea id="vmsg" name="message" rows="5" required placeholder="Background, skills, what you're hoping to contribute. Feel free to paste a link to your CV or LinkedIn."></textarea></div>
+          <button type="submit" class="btn btn-primary"><span class="i18n-en">Submit Application</span><span class="i18n-ha">Aika Nema</span></button>
+        </form>
+        <p style="font-size:.82rem; color:var(--muted); margin-top:12px;"><span class="i18n-en">Prefer to email? Send your CV to <a href="mailto:info@weaidinitiative.org">info@weaidinitiative.org</a> with the role in the subject line.</span><span class="i18n-ha">Ka fi son aika imel? Aiko CV ka zuwa <a href="mailto:info@weaidinitiative.org">info@weaidinitiative.org</a>.</span></p>
       </aside>
     </div>
   </div>

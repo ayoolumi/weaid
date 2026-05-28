@@ -233,38 +233,123 @@ function renderReports() {
       <td><span class="status ${r.statusClass}">${r.status}</span></td>
     </tr>`).join('');
 }
-document.addEventListener('submit', (e) => {
-  const form = e.target.closest('#citizen-report-form');
+// =====================================================
+// Real form submission via Formspree
+// Forms supported: #contact-form, #citizen-report-form, #volunteer-form
+// Each form's <form action="..."> attribute provides its Formspree endpoint.
+// =====================================================
+
+// Map of formId → { confirmBannerId, successMessage(en, ha), augmentDataBeforePost }
+const FORM_CONFIG = {
+  'contact-form': {
+    bannerId: 'contact-confirm',
+    msgEn: (data) => `<strong>Thank you.</strong> Your message has been received. We typically respond within 2 business days.`,
+    msgHa: (data) => `<strong>Mun gode.</strong> An karbi sakonka. Yawanci muna amsa cikin kwanaki 2 na aiki.`,
+  },
+  'citizen-report-form': {
+    bannerId: 'citizen-confirm',
+    augment: (form, data) => {
+      // Generate tracking ID, also save to local dashboard mirror
+      const id = genTrackingId();
+      data.set('tracking_id', id);
+      // Also append to localStorage so the dashboard table updates
+      const report = {
+        id,
+        category: data.get('category'),
+        location: data.get('location'),
+        description: data.get('description'),
+        anonymous: !!data.get('anonymous'),
+        name: data.get('name'),
+        contact: data.get('contact'),
+        status: 'Submitted',
+        statusClass: 's-submitted',
+        created: Date.now(),
+      };
+      const list = loadReports();
+      list.push(report);
+      saveReports(list);
+      renderReports();
+      // Stash id for the success message
+      form.dataset.lastTrackingId = id;
+    },
+    msgEn: (data, form) => `<strong>Report submitted.</strong> Your tracking ID is <code>${form.dataset.lastTrackingId}</code>. Save this code to check the status of your report. Our governance team will review within 5 business days.`,
+    msgHa: (data, form) => `<strong>An aiko rahoto.</strong> Lambar bin diddiginka ita ce <code>${form.dataset.lastTrackingId}</code>. Tawagar shugabancinmu za ta duba cikin kwanaki 5 na aiki.`,
+  },
+  'volunteer-form': {
+    bannerId: 'volunteer-confirm',
+    msgEn: (data) => `<strong>Thank you!</strong> Your volunteer application has been received. We'll be in touch within a few days.`,
+    msgHa: (data) => `<strong>Mun gode!</strong> An karbi neman sa kai naka. Za mu tuntube ka cikin 'yan kwanaki.`,
+  },
+};
+
+document.addEventListener('submit', async (e) => {
+  const form = e.target.closest('form');
   if (!form) return;
+  const cfg = FORM_CONFIG[form.id];
+  if (!cfg) return; // not one of our managed forms
+  const endpoint = form.action;
+  if (!endpoint || !endpoint.includes('formspree.io')) return; // safety: only intercept Formspree forms
   e.preventDefault();
-  const data = new FormData(form);
-  const report = {
-    id: genTrackingId(),
-    category: data.get('category'),
-    location: data.get('location'),
-    description: data.get('description'),
-    anonymous: !!data.get('anonymous'),
-    name: data.get('name'),
-    contact: data.get('contact'),
-    status: 'Submitted',
-    statusClass: 's-submitted',
-    created: Date.now(),
-  };
-  const list = loadReports();
-  list.push(report);
-  saveReports(list);
-  renderReports();
-  const banner = document.querySelector('#citizen-confirm');
-  if (banner) {
-    const isHa = document.documentElement.lang === 'ha';
-    banner.innerHTML = isHa
-      ? `<strong>An aiko rahoto.</strong> Lambar bin diddiginka ita ce <code>${report.id}</code>. Ka adana wannan lambar don ka bincika halin rahoton ka.`
-      : `<strong>Report submitted.</strong> Your tracking ID is <code>${report.id}</code>. Save this code to check the status of your report.`;
-    banner.style.display = 'block';
-    banner.scrollIntoView({behavior:'smooth', block:'center'});
+
+  const banner = document.getElementById(cfg.bannerId);
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const originalBtnText = submitBtn ? submitBtn.innerHTML : '';
+  const isHa = document.documentElement.lang === 'ha';
+
+  // Loading state
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = isHa ? 'Ana aikawa…' : 'Sending…';
   }
-  form.reset();
+
+  const data = new FormData(form);
+  if (cfg.augment) cfg.augment(form, data);
+
+  try {
+    const resp = await fetch(endpoint, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' },
+    });
+    if (resp.ok) {
+      if (banner) {
+        banner.innerHTML = isHa ? cfg.msgHa(data, form) : cfg.msgEn(data, form);
+        banner.style.background = '#E3F4E9';
+        banner.style.color = '#1E7C3A';
+        banner.style.display = 'block';
+        banner.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+      form.reset();
+    } else {
+      let errMsg = isHa ? 'Akwai matsala wajen aika sako. Ka sake gwadawa, ko aiko zuwa info@weaidinitiative.org.' : 'There was a problem sending your message. Please try again, or email info@weaidinitiative.org directly.';
+      try {
+        const j = await resp.json();
+        if (j && j.errors && j.errors.length) errMsg = j.errors.map(e => e.message).join(' · ');
+      } catch(_) {}
+      if (banner) {
+        banner.innerHTML = `<strong>⚠️</strong> ${errMsg}`;
+        banner.style.background = '#FBECE9';
+        banner.style.color = '#962E22';
+        banner.style.display = 'block';
+        banner.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    }
+  } catch (err) {
+    if (banner) {
+      banner.innerHTML = `<strong>⚠️</strong> ${isHa ? 'Babu intanet. Ka sake gwadawa lokacin da intanet ya dawo.' : 'Network error. Please check your connection and try again.'}`;
+      banner.style.background = '#FBECE9';
+      banner.style.color = '#962E22';
+      banner.style.display = 'block';
+    }
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+    }
+  }
 });
+
+// Seed dashboard with two demo reports on first load
 document.addEventListener('DOMContentLoaded', () => {
   renderReports();
   const list = loadReports();
@@ -280,21 +365,4 @@ document.addEventListener('DOMContentLoaded', () => {
     saveReports(seed);
     renderReports();
   }
-});
-
-// ---------- Contact form (demo) ----------
-document.addEventListener('submit', (e) => {
-  const form = e.target.closest('#contact-form');
-  if (!form) return;
-  e.preventDefault();
-  const banner = document.querySelector('#contact-confirm');
-  if (banner) {
-    const isHa = document.documentElement.lang === 'ha';
-    banner.innerHTML = isHa
-      ? `<strong>Mun gode.</strong> An karbi sakonka. Yawanci muna amsa cikin kwanaki 2 na aiki.`
-      : `<strong>Thank you.</strong> Your message has been received. We typically respond within 2 business days.`;
-    banner.style.display = 'block';
-    banner.scrollIntoView({behavior:'smooth', block:'center'});
-  }
-  form.reset();
 });

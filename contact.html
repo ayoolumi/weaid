@@ -58,16 +58,20 @@
       <div>
         <h2><span class="i18n-en">Send a message</span><span class="i18n-ha">Aika sako</span></h2>
         <div id="contact-confirm" style="display:none; padding:16px; border-radius:10px; background:#E3F4E9; color:#1E7C3A; margin:14px 0;"></div>
-        <form id="contact-form" class="card">
+        <form id="contact-form" class="card" action="https://formspree.io/f/xgoqdnbn" method="POST">
+          <input type="hidden" name="_subject" value="Website Contact — We Aid Initiative">
+          <input type="hidden" name="form_type" value="Contact form">
+          <!-- Honeypot field — bots fill it, humans don't see it -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute; left:-5000px; opacity:0; pointer-events:none;" aria-hidden="true">
           <div class="form-field"><label for="cname"><span class="i18n-en">Your name</span><span class="i18n-ha">Sunan ka</span></label><input id="cname" name="name" type="text" required></div>
           <div class="form-field"><label for="cemail"><span class="i18n-en">Email</span><span class="i18n-ha">Imel</span></label><input id="cemail" name="email" type="email" required></div>
           <div class="form-field"><label for="csubject"><span class="i18n-en">Subject</span><span class="i18n-ha">Batu</span></label>
             <select id="csubject" name="subject">
-              <option><span class="i18n-en">General enquiry</span><span class="i18n-ha">Tambaya ta gaba daya</span></option>
-              <option><span class="i18n-en">Partnership</span><span class="i18n-ha">Hadin gwiwa</span></option>
-              <option><span class="i18n-en">Media / press</span><span class="i18n-ha">Kafofin watsa labarai</span></option>
-              <option><span class="i18n-en">Volunteer</span><span class="i18n-ha">Sa Kai</span></option>
-              <option><span class="i18n-en">Donor enquiry</span><span class="i18n-ha">Tambayar mai ba da tallafi</span></option>
+              <option value="General enquiry">General enquiry</option>
+              <option value="Partnership">Partnership</option>
+              <option value="Media / press">Media / press</option>
+              <option value="Volunteer">Volunteer</option>
+              <option value="Donor enquiry">Donor enquiry</option>
             </select>
           </div>
           <div class="form-field"><label for="cmsg"><span class="i18n-en">Message</span><span class="i18n-ha">Sako</span></label><textarea id="cmsg" name="message" rows="5" required></textarea></div>

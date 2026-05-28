@@ -59,19 +59,22 @@
         <h2 data-i18n="citizen.report.title"><span class="i18n-en">Report a Governance Issue</span><span class="i18n-ha">Bayar da Rahoton Matsalar Shugabanci</span></h2>
         <p class="lead" data-i18n="citizen.report.sub"><span class="i18n-en">Use this form to flag a public-service problem in your community. Submissions are reviewed by our governance team and routed to the relevant authorities.</span><span class="i18n-ha">Yi amfani da wannan fom don bayyana matsalar hidima ta jama'a a cikin al'ummarka. Tawagar shugabancinmu na dubawa kowane aikawa kuma a tura wa hukumomin da abin ya shafa.</span></p>
         <div id="citizen-confirm" style="display:none; padding:16px; border-radius:10px; background:#E3F4E9; color:#1E7C3A; margin:14px 0;"></div>
-        <form id="citizen-report-form" class="card" style="background:#fff;">
+        <form id="citizen-report-form" class="card" style="background:#fff;" action="https://formspree.io/f/xgoqdnbn" method="POST">
+          <input type="hidden" name="_subject" value="Citizen Report — We Aid Initiative">
+          <input type="hidden" name="form_type" value="Citizen governance report">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute; left:-5000px; opacity:0; pointer-events:none;" aria-hidden="true">
           <div class="form-field">
             <label for="category" data-i18n="citizen.form.cat"><span class="i18n-en">Issue category</span><span class="i18n-ha">Nau'in matsala</span></label>
             <select id="category" name="category" required>
-              <option value=""><span class="i18n-en">Choose a category…</span><span class="i18n-ha">Zabi nau'i…</span></option>
-              <option><span class="i18n-en">Corruption</span><span class="i18n-ha">Cin Hanci</span></option>
-              <option><span class="i18n-en">Poor Infrastructure</span><span class="i18n-ha">Mara Kyau na Kayan Aikin Yau da Kullum</span></option>
-              <option><span class="i18n-en">Education</span><span class="i18n-ha">Ilimi</span></option>
-              <option><span class="i18n-en">Healthcare</span><span class="i18n-ha">Kiwon Lafiya</span></option>
-              <option><span class="i18n-en">Gender-Based Violence</span><span class="i18n-ha">Cin Zarafin Jinsi</span></option>
-              <option><span class="i18n-en">Environmental issues</span><span class="i18n-ha">Al'amuran muhalli</span></option>
-              <option><span class="i18n-en">Rights violations</span><span class="i18n-ha">Keta hakkoki</span></option>
-              <option><span class="i18n-en">Other</span><span class="i18n-ha">Sauran</span></option>
+              <option value="">Choose a category…</option>
+              <option value="Corruption">Corruption</option>
+              <option value="Poor Infrastructure">Poor Infrastructure</option>
+              <option value="Education">Education</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Gender-Based Violence">Gender-Based Violence</option>
+              <option value="Environmental issues">Environmental issues</option>
+              <option value="Rights violations">Rights violations</option>
+              <option value="Other">Other</option>
             </select>
           </div>
           <div class="form-field">
@@ -113,7 +116,7 @@
           <li><span class="i18n-en">Sensitive cases (GBV, violence) are routed to specialised partners.</span><span class="i18n-ha">Ana tura lamuran masu hassasiyya (GBV, tashin hankali) ga abokan hadin gwiwa kwararru.</span></li>
           <li><span class="i18n-en">Personal data is never published.</span><span class="i18n-ha">Ba a wallafa bayanai na sirri.</span></li>
         </ul>
-        <p style="font-size:.85rem; color:var(--muted); border-left:3px solid var(--line); padding-left:12px; margin-top:18px;">ℹ️ <span class="i18n-en">This is a working prototype — reports are stored in your browser. The production version will submit securely to our governance team and route to the relevant authority.</span><span class="i18n-ha">Wannan samfurin aiki ne — ana adana rahotanni a cikin browser ɗinka. Sigar gama-garin za ta aika cikin tsaro ga tawagar shugabancinmu.</span></p>
+        <p style="font-size:.85rem; color:var(--muted); border-left:3px solid var(--line); padding-left:12px; margin-top:18px;">ℹ️ <span class="i18n-en">Submitted reports are sent securely to our governance team and also displayed on the public dashboard with your tracking ID. Personal data is never published.</span><span class="i18n-ha">Ana aika rahotannin da aka aiko cikin tsaro ga tawagar shugabancinmu kuma ana nuna su a kan allon jama'a tare da lambar bin diddiginka. Ba a wallafa bayanai na sirri ba.</span></p>
       </aside>
     </div>
   </div>
