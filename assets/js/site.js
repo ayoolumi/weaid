@@ -378,20 +378,9 @@ document.addEventListener('submit', async (e) => {
   }
 });
 
-// Seed dashboard with two demo reports on first load
+// Dashboard starts empty — the first real citizen submission populates it.
+// (Demo seed reports were removed for the launch; the empty-state copy
+// "Be the first — use the form above." prompts the first submission.)
 document.addEventListener('DOMContentLoaded', () => {
   renderReports();
-  const list = loadReports();
-  if (list.length === 0) {
-    const seed = [
-      { id: 'CTZ-202410-A4K2P', category: 'Poor Infrastructure', location: 'Bauchi, Bauchi LGA',
-        description: 'Pot-holed road on Yandoka Street has been impassable for weeks.',
-        status: 'In Progress', statusClass: 's-progress', created: Date.now() - 86400000*8 },
-      { id: 'CTZ-202410-B9M7X', category: 'Healthcare', location: 'Toro LGA',
-        description: 'PHC out of stock for malaria drugs since the rainy season started.',
-        status: 'Escalated', statusClass: 's-escalated', created: Date.now() - 86400000*3 },
-    ];
-    saveReports(seed);
-    renderReports();
-  }
 });
