@@ -378,9 +378,176 @@ document.addEventListener('submit', async (e) => {
   }
 });
 
-// Dashboard starts empty — the first real citizen submission populates it.
-// (Demo seed reports were removed for the launch; the empty-state copy
-// "Be the first — use the form above." prompts the first submission.)
+// =====================================================
+// Demo dataset seeder for The Citizen platform
+// 8,500 synthetic reports, 80% Bauchi / 12% Gombe / 5% Yobe / 3% Borno
+// CLEARLY LABELLED as demo data on every page that displays it.
+// To clear and start fresh with real submissions:
+//   localStorage.removeItem('weaid_citizen_reports');
+//   localStorage.removeItem('weaid_demo_seeded');
+// or click "Reset to live mode" on the Policy & Data page.
+// =====================================================
+const DEMO_SEEDED_KEY = 'weaid_demo_seeded';
+const DEMO_VERSION = 'v1';
+
+function generateDemoReports() {
+  const reports = [];
+  const stateLgas = {
+    'Bauchi': ['Bauchi', 'Tafawa Balewa', 'Bogoro', 'Misau', 'Toro', 'Dass', 'Alkaleri', 'Ningi', 'Jama\'are', 'Katagum', 'Zaki', 'Itas/Gadau', 'Darazo', 'Ganjuwa', 'Giade', 'Kirfi', 'Shira', 'Warji', 'Gamawa'],
+    'Gombe':  ['Gombe', 'Kaltungo', 'Akko', 'Yamaltu/Deba', 'Dukku', 'Kwami', 'Funakaye', 'Balanga', 'Billiri', 'Nafada', 'Shongom'],
+    'Yobe':   ['Damaturu', 'Potiskum', 'Nguru', 'Geidam', 'Bade', 'Fika'],
+    'Borno':  ['Maiduguri', 'Jere', 'Konduga', 'Biu', 'Bama'],
+  };
+  const stateWeights = { 'Bauchi': 0.80, 'Gombe': 0.12, 'Yobe': 0.05, 'Borno': 0.03 };
+
+  const categories = [
+    { name: 'Poor Infrastructure',     weight: 0.22, descs: [
+      'Pot-holed road severely damaged after the rains, impassable for weeks.',
+      'Bridge in poor condition with visible cracks, risk to commuters.',
+      'Drainage system blocked, flooding during the rainy season.',
+      'Street lighting non-functional, residents report security concerns.',
+      'Borehole has been broken for several months, no clean water access.',
+      'Culvert collapsed, vehicles unable to cross.',
+      'Market road in poor state affecting trade.',
+    ]},
+    { name: 'Healthcare',              weight: 0.18, descs: [
+      'PHC out of stock for malaria drugs since the rainy season started.',
+      'No qualified nurse posted to the community clinic for several months.',
+      'Maternity ward lacks basic supplies and electricity.',
+      'Vaccines spoiled due to broken refrigeration at the local clinic.',
+      'Long-standing shortage of ambulance services in the LGA.',
+      'PHC closed unexpectedly during working hours, no notice given.',
+    ]},
+    { name: 'Education',               weight: 0.17, descs: [
+      'Primary school has no functional classroom roof, children study in the open.',
+      'Long-standing teacher shortage at the local secondary school.',
+      'WAEC fees inflated by unofficial charges affecting candidates.',
+      'School blocks abandoned mid-construction for over a year.',
+      'No qualified mathematics teacher posted for three consecutive sessions.',
+      'School feeding programme stopped without explanation.',
+    ]},
+    { name: 'Gender-Based Violence',   weight: 0.12, descs: [
+      'Survivor referred through community pathway, awaiting Justice Center follow-up.',
+      'Domestic incident reported by neighbours; needs survivor-centred response.',
+      'Out-of-school adolescent girl reports forced marriage pressure.',
+      'Case raised at community engagement meeting, requires legal aid.',
+      'Survivor requesting psychosocial support and safe shelter referral.',
+    ]},
+    { name: 'Rights violations',       weight: 0.10, descs: [
+      'Detainee held beyond constitutional limit at LGA police station.',
+      'Wrongful eviction reported by community members, no due process.',
+      'Land grab affecting widows and orphans, pending legal intervention.',
+      'Disability access denied at public service office.',
+      'Discriminatory practice reported in community service delivery.',
+    ]},
+    { name: 'Environmental issues',    weight: 0.09, descs: [
+      'Open dumping of refuse near residential area causing health concerns.',
+      'Deforestation along community boundary worsening soil erosion.',
+      'Burning of waste close to school creating air quality issue.',
+      'Drainage pollution affecting downstream farming households.',
+      'Bush fire damage to farmland, no government response yet.',
+    ]},
+    { name: 'Corruption',              weight: 0.07, descs: [
+      'Reports of unofficial payments demanded at LGA registration office.',
+      'Diverted government rice not reaching listed beneficiaries.',
+      'Ghost workers reported on local council payroll.',
+      'Project funded but never executed, signboard removed.',
+    ]},
+    { name: 'Other',                   weight: 0.05, descs: [
+      'Cross-cutting community issue requiring coordinated response.',
+      'Stakeholder engagement requested for community-level dispute.',
+      'Multi-sector concern raised at recent town hall.',
+    ]},
+  ];
+
+  const statuses = [
+    { name: 'Submitted',    cls: 's-submitted', weight: 0.18 },
+    { name: 'Under Review', cls: 's-review',    weight: 0.22 },
+    { name: 'Escalated',    cls: 's-escalated', weight: 0.18 },
+    { name: 'In Progress',  cls: 's-progress',  weight: 0.22 },
+    { name: 'Resolved',     cls: 's-resolved',  weight: 0.20 },
+  ];
+
+  function pickWeighted(items, weightKey = 'weight') {
+    const total = items.reduce((s, it) => s + it[weightKey], 0);
+    let r = Math.random() * total;
+    for (const it of items) {
+      r -= it[weightKey];
+      if (r <= 0) return it;
+    }
+    return items[items.length - 1];
+  }
+  function pickStateWeighted() {
+    const r = Math.random();
+    let acc = 0;
+    for (const [state, w] of Object.entries(stateWeights)) {
+      acc += w;
+      if (r <= acc) return state;
+    }
+    return 'Bauchi';
+  }
+  function randomId(date) {
+    const code = Math.random().toString(36).slice(2, 7).toUpperCase();
+    return `CTZ-${date.getFullYear()}${String(date.getMonth()+1).padStart(2,'0')}-${code}`;
+  }
+
+  // Spread reports across roughly the last 24 months, with more recent volume
+  const now = Date.now();
+  const TWO_YEARS_MS = 730 * 24 * 60 * 60 * 1000;
+
+  // Target ~8500 reports
+  const TARGET = 8500;
+  for (let i = 0; i < TARGET; i++) {
+    const state = pickStateWeighted();
+    const lga = stateLgas[state][Math.floor(Math.random() * stateLgas[state].length)];
+    const cat = pickWeighted(categories);
+    const desc = cat.descs[Math.floor(Math.random() * cat.descs.length)];
+    const status = pickWeighted(statuses);
+    // Bias time distribution: cube to make recent reports more common
+    const ageFactor = Math.pow(Math.random(), 1.6);
+    const ageMs = ageFactor * TWO_YEARS_MS;
+    const created = now - ageMs;
+    const d = new Date(created);
+    reports.push({
+      id: randomId(d),
+      category: cat.name,
+      location: `${lga}, ${state}`,
+      description: desc,
+      status: status.name,
+      statusClass: status.cls,
+      created,
+      isDemo: true,
+    });
+  }
+  return reports;
+}
+
+// Seed on first load if not already seeded
 document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const alreadySeeded = localStorage.getItem(DEMO_SEEDED_KEY);
+    if (!alreadySeeded) {
+      const existing = loadReports();
+      // Only seed if dataset is empty (don't overwrite real submissions)
+      if (existing.length === 0) {
+        const seed = generateDemoReports();
+        saveReports(seed);
+        localStorage.setItem(DEMO_SEEDED_KEY, DEMO_VERSION);
+      } else {
+        // Mark as seeded so we don't try again next time
+        localStorage.setItem(DEMO_SEEDED_KEY, DEMO_VERSION);
+      }
+    }
+  } catch(e) {}
   renderReports();
 });
+
+// Expose reset helper for the "Reset to live mode" button on Policy & Data page
+window.weaidResetDemo = function() {
+  if (!confirm('This will clear the demo dataset (8,500 synthetic reports) and start fresh for real citizen submissions. Continue?')) return;
+  try {
+    localStorage.removeItem('weaid_citizen_reports');
+    localStorage.removeItem(DEMO_SEEDED_KEY);
+    location.reload();
+  } catch(e) { alert('Could not reset. Try clearing your browser storage manually.'); }
+};
