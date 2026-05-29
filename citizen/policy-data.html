@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title><span class="i18n-en">Policy &amp; Data</span><span class="i18n-ha">Manufofi &amp; Bayanai</span> — We Aid Initiative</title>
+<title>Policy &amp; Data — The Citizen · We Aid Initiative</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0D1B2A">
-<meta name="description" content="We Aid Initiative — citizen-centered governance, justice, climate and innovation.">
+<meta name="description" content="Live, anonymised, citizen-generated data from The Citizen platform — open and free for researchers, journalists and policymakers.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap" rel="stylesheet">
@@ -16,6 +16,50 @@
 <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/apple-touch-icon.png">
 <link rel="shortcut icon" href="../assets/img/favicon.ico">
+<style>
+  .data-hub-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; }
+  @media (max-width: 800px) { .data-hub-grid { grid-template-columns: repeat(2, 1fr); } }
+  .data-stat {
+    background:#fff; border:1px solid var(--line); border-radius:14px; padding:24px;
+    box-shadow: 0 1px 2px rgba(13,27,42,.04), 0 8px 24px -8px rgba(13,27,42,.08);
+  }
+  .data-stat .num {
+    font-family: var(--font-display); font-size:2.4rem; font-weight:600; line-height:1;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--red) 100%);
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color: transparent;
+  }
+  .data-stat .lbl { color:var(--slate); font-size:.88rem; margin-top:8px; font-weight:500; }
+
+  .live-pulse { display:inline-flex; align-items:center; gap:8px; font-size:.75rem; font-weight:700; color:var(--green); letter-spacing:.1em; text-transform:uppercase; }
+  .live-pulse::before {
+    content:""; width:8px; height:8px; border-radius:50%; background: var(--green);
+    box-shadow: 0 0 0 0 rgba(30,124,58,.7); animation: livePulse 2s infinite;
+  }
+  @keyframes livePulse { 0%{box-shadow:0 0 0 0 rgba(30,124,58,.7);} 70%{box-shadow:0 0 0 10px rgba(30,124,58,0);} 100%{box-shadow:0 0 0 0 rgba(30,124,58,0);} }
+
+  .bar-row { display:flex; align-items:center; gap:14px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .bar-row:last-child { border-bottom:0; }
+  .bar-label { width:200px; font-size:.92rem; color:var(--navy); font-weight:500; }
+  .bar-track { flex:1; height:14px; background:var(--bg-soft); border-radius:999px; overflow:hidden; position:relative; }
+  .bar-fill { height:100%; background:linear-gradient(90deg, var(--red) 0%, #d8443a 100%); border-radius:999px; transition: width 1s cubic-bezier(0.22,1,0.36,1); }
+  .bar-count { width:50px; text-align:right; font-weight:700; color:var(--navy); font-variant-numeric: tabular-nums; }
+  .status-pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:.76rem; font-weight:600; }
+
+  .download-card {
+    background: linear-gradient(135deg, var(--navy) 0%, #16263c 100%);
+    color:#fff; border-radius:18px; padding:32px; position:relative; overflow:hidden;
+  }
+  .download-card::after {
+    content:""; position:absolute; top:-50%; right:-20%; width:300px; height:300px; border-radius:50%;
+    background: radial-gradient(circle, rgba(192,57,43,.4) 0%, transparent 70%);
+  }
+  .download-card h3 { color:#fff; font-size:1.4rem; }
+  .download-card p { color:#cfd6e0; }
+  .download-card .btn { position:relative; z-index:2; }
+
+  .notify-card { background: var(--bg-warm); border-radius:18px; padding:32px; border:1px solid rgba(192,57,43,.15); }
+  #notify-confirm { display:none; padding:14px 18px; border-radius:10px; background:#E3F4E9; color:#1E7C3A; margin-top:14px; font-size:.92rem; }
+</style>
 </head>
 <body>
 <div class="utility-bar">
@@ -50,20 +94,110 @@
     <div class="breadcrumbs"><a href="../index.html"><span class="i18n-en">Home</span><span class="i18n-ha">Gida</span></a><span class="sep">/</span><a href="index.html"><span class="i18n-en">The Citizen</span><span class="i18n-ha">Mai Kasa</span></a><span class="sep">/</span><span><span class="i18n-en">Policy &amp; Data</span><span class="i18n-ha">Manufofi &amp; Bayanai</span></span></div>
     <span class="eyebrow"><span class="i18n-en">Policy &amp; Data</span><span class="i18n-ha">Manufofi &amp; Bayanai</span></span>
     <h1><span class="i18n-en">Citizen voice as evidence.</span><span class="i18n-ha">Muryar dan kasa a matsayin shaida.</span></h1>
-    <p class="lead"><span class="i18n-en">Open, anonymised citizen-generated data that we use to inform advocacy and policy briefs.</span><span class="i18n-ha">Bayanan da 'yan kasa suka samar a fili kuma marasa suna wadanda muke amfani da su don sanar da kira-zuwa-gaba da takardun manufofi.</span></p>
+    <p class="lead"><span class="i18n-en">Every report citizens submit through The Citizen platform becomes part of an open, anonymised dataset — free for researchers, journalists, policymakers and the public.</span><span class="i18n-ha">Kowane rahoton da 'yan ƙasa ke aiko ta dandalin Mai Kasa yana zama wani ɓangare na bayanai a buɗe — kyauta ga masu bincike, 'yan jarida, masu tsara manufofi da jama'a.</span></p>
   </div>
 </section>
 
-<section class="section">
+<!-- LIVE STATS -->
+<section style="background: var(--bg-soft); padding: 40px 0;">
   <div class="container">
-    <div class="grid grid-3">
-      <article class="card"><span class="pill pill-gold"><span class="i18n-en">Dataset</span><span class="i18n-ha">Tarin bayanai</span></span><h3 class="mt-2"><span class="i18n-en">Citizen reports — Q1</span><span class="i18n-ha">Rahotannin 'yan kasa — Q1</span></h3><p><span class="i18n-en">Anonymised CSV of reports submitted in the last quarter.</span><span class="i18n-ha">CSV maras suna na rahotannin da aka aiko a kwata na karshe.</span></p><span class="more"><span class="i18n-en">Download CSV</span><span class="i18n-ha">Sauke CSV</span></span></article>
-      <article class="card"><span class="pill pill-navy"><span class="i18n-en">Brief</span><span class="i18n-ha">Takarda</span></span><h3 class="mt-2"><span class="i18n-en">What citizens are saying about healthcare in NE Nigeria</span><span class="i18n-ha">Abin da 'yan kasa ke fadi kan kiwon lafiya a Arewa-Maso-Gabashin Najeriya</span></h3><p><span class="i18n-en">Synthesis of 80+ healthcare-related reports.</span><span class="i18n-ha">Hadewar rahotannin 80+ da suka shafi kiwon lafiya.</span></p><span class="more"><span class="i18n-en">Read brief</span><span class="i18n-ha">Karanta takarda</span></span></article>
-      <article class="card"><span class="pill"><span class="i18n-en">Brief</span><span class="i18n-ha">Takarda</span></span><h3 class="mt-2"><span class="i18n-en">GBV reporting patterns: a year in review</span><span class="i18n-ha">Tsarin bayar da rahoton GBV: nazari na shekara</span></h3><p><span class="i18n-en">Categories, escalation rates, and resolution times.</span><span class="i18n-ha">Nau'o'i, kashi na karawa, da lokutan warwarewa.</span></p><span class="more"><span class="i18n-en">Read brief</span><span class="i18n-ha">Karanta takarda</span></span></article>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
+      <h2 style="margin:0; font-size:1.5rem;"><span class="i18n-en">Live dataset</span><span class="i18n-ha">Bayanan kai tsaye</span></h2>
+      <span class="live-pulse">Live · <span id="last-updated">just now</span></span>
     </div>
-    <p class="placeholder mt-4"><span class="i18n-en">Dataset</span><span class="i18n-ha">Tarin bayanai</span> and briefs are <span class="i18n-en">PLACEHOLDER</span><span class="i18n-ha">PLACEHOLDER</span>S pending content development.</p>
+    <div class="data-hub-grid">
+      <div class="data-stat"><div class="num" id="stat-total">0</div><div class="lbl"><span class="i18n-en">Total reports submitted</span><span class="i18n-ha">Jimillar rahotanni</span></div></div>
+      <div class="data-stat"><div class="num" id="stat-resolved">0</div><div class="lbl"><span class="i18n-en">Resolved or in progress</span><span class="i18n-ha">An warware ko ana aiki</span></div></div>
+      <div class="data-stat"><div class="num" id="stat-categories">0</div><div class="lbl"><span class="i18n-en">Distinct categories</span><span class="i18n-ha">Nau'o'i daban-daban</span></div></div>
+      <div class="data-stat"><div class="num" id="stat-locations">0</div><div class="lbl"><span class="i18n-en">Locations represented</span><span class="i18n-ha">Wuraren da aka wakilta</span></div></div>
+    </div>
   </div>
 </section>
+
+<!-- BREAKDOWNS -->
+<section class="section">
+  <div class="container">
+    <div class="grid grid-2" style="align-items:start; gap:48px;">
+      <div>
+        <span class="eyebrow"><span class="i18n-en">Distribution</span><span class="i18n-ha">Yadda aka rarraba</span></span>
+        <h2><span class="i18n-en">Reports by category</span><span class="i18n-ha">Rahotanni a kowane nau'i</span></h2>
+        <p style="color:var(--slate);"><span class="i18n-en">Calculated in real time from the public dataset. Each bar grows as more citizens report.</span><span class="i18n-ha">Ana lissafa shi a kai tsaye daga bayanan jama'a.</span></p>
+        <div id="category-bars" style="margin-top:24px;">
+          <p style="color:var(--muted); font-style:italic;"><span class="i18n-en">Waiting for the first report…</span><span class="i18n-ha">Ana jiran rahoton farko…</span></p>
+        </div>
+      </div>
+      <div>
+        <span class="eyebrow"><span class="i18n-en">Status pipeline</span><span class="i18n-ha">Tsarin matakai</span></span>
+        <h2><span class="i18n-en">Where reports are in the pipeline</span><span class="i18n-ha">Inda rahotanni suke a cikin tsarin</span></h2>
+        <p style="color:var(--slate);"><span class="i18n-en">Every report moves through five public statuses, from Submitted to Resolved.</span><span class="i18n-ha">Kowane rahoto yana motsawa ta matakai biyar.</span></p>
+        <div id="status-bars" style="margin-top:24px;">
+          <p style="color:var(--muted); font-style:italic;"><span class="i18n-en">Waiting for the first report…</span><span class="i18n-ha">Ana jiran rahoton farko…</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD + NOTIFY -->
+<section class="section section-soft">
+  <div class="container">
+    <div class="grid grid-2" style="gap:32px;">
+      <div class="download-card">
+        <h3><span class="i18n-en">Download the dataset</span><span class="i18n-ha">Sauke bayanai</span></h3>
+        <p><span class="i18n-en">Anonymised CSV of every report currently in the dataset. Personally identifying information is stripped before export. Free to use under Creative Commons BY 4.0.</span><span class="i18n-ha">CSV maras suna na kowane rahoto. Ana cire bayanan sirri kafin fitarwa. Kyauta a karkashin Creative Commons BY 4.0.</span></p>
+        <button id="download-csv" class="btn btn-primary" style="margin-top:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px; margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span class="i18n-en">Download CSV</span><span class="i18n-ha">Sauke CSV</span>
+        </button>
+        <p style="margin-top:16px; font-size:.82rem; color:#b3bcc9;"><span class="i18n-en">Rows included:</span><span class="i18n-ha">Layuka:</span> <span id="csv-row-count">0</span></p>
+      </div>
+
+      <div class="notify-card">
+        <h3 style="color:var(--navy);"><span class="i18n-en">Get notified when briefs publish</span><span class="i18n-ha">Karbi sanarwa idan an buga takarda</span></h3>
+        <p style="color:var(--slate);"><span class="i18n-en">We're synthesising the dataset into thematic briefs (healthcare, GBV patterns, infrastructure). Sign up and we'll email you when each one publishes.</span><span class="i18n-ha">Muna haɗa bayanan zuwa takardun jigogi (lafiya, GBV, ababen more rayuwa).</span></p>
+        <form id="notify-form" action="https://formspree.io/f/xgoqdnbn" method="POST" style="margin-top:16px;">
+          <input type="hidden" name="_subject" value="Policy &amp; Data — Brief signup">
+          <input type="hidden" name="form_type" value="Policy data brief signup">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute; left:-5000px; opacity:0; pointer-events:none;" aria-hidden="true">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <input type="email" name="email" required placeholder="your@email.com" style="flex:1; min-width:180px; padding:12px 14px; border:1.5px solid var(--line); border-radius:8px; font-family:inherit; font-size:.95rem;">
+            <button type="submit" class="btn btn-dark"><span class="i18n-en">Notify me</span><span class="i18n-ha">Sanar da ni</span></button>
+          </div>
+          <p style="margin-top:8px; font-size:.78rem; color:var(--muted);"><span class="i18n-en">We only email when a new brief publishes. No spam.</span><span class="i18n-ha">Muna aika imel ne kawai idan an buga sabuwar takarda.</span></p>
+        </form>
+        <div id="notify-confirm" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW THE DATA WORKS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="i18n-en">Open by design</span><span class="i18n-ha">Buɗe ta zane</span></span>
+      <h2><span class="i18n-en">How the data works</span><span class="i18n-ha">Yadda bayanai ke aiki</span></h2>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3><span class="i18n-en">Anonymised by default</span><span class="i18n-ha">Babu suna ta tsohuwa</span></h3>
+        <p><span class="i18n-en">Names, contact details and any other personal data are stripped before any report enters the public dataset.</span><span class="i18n-ha">Ana cire sunaye, bayanan sadarwa kafin kowane rahoto ya shiga bayanan jama'a.</span></p>
+      </div>
+      <div class="card">
+        <div class="icon">📊</div>
+        <h3><span class="i18n-en">Updated in real time</span><span class="i18n-ha">Ana sabuntawa kai tsaye</span></h3>
+        <p><span class="i18n-en">Every new report submitted by a citizen appears in the dataset within seconds. No batch lag, no manual approval queue.</span><span class="i18n-ha">Kowane sabon rahoto yana bayyana cikin ƴan dakikoki.</span></p>
+      </div>
+      <div class="card">
+        <div class="icon">🔓</div>
+        <h3><span class="i18n-en">Free to use</span><span class="i18n-ha">Kyauta don amfani</span></h3>
+        <p><span class="i18n-en">Creative Commons BY 4.0. Researchers, journalists, policymakers and students may use the data freely with attribution to We Aid Initiative.</span><span class="i18n-ha">CC BY 4.0. Masu bincike da 'yan jarida za su iya amfani da bayanai kyauta.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -75,36 +209,9 @@
           <a href="https://www.instagram.com/we_aid_initiative/">Instagram</a>
         </div>
       </div>
-      <div>
-        <h4><span class="i18n-en">Explore</span><span class="i18n-ha">Bincika</span></h4>
-        <ul>
-          <li><a href="../about.html"><span class="i18n-en">About</span><span class="i18n-ha">Game da Mu</span></a></li>
-          <li><a href="../impact/index.html"><span class="i18n-en">Impact Areas</span><span class="i18n-ha">Yankunan Tasiri</span></a></li>
-          <li><a href="../initiatives/index.html"><span class="i18n-en">Initiatives</span><span class="i18n-ha">Shirye-shirye</span></a></li>
-          <li><a href="../citizen/index.html"><span class="i18n-en">The Citizen</span><span class="i18n-ha">Mai Kasa</span></a></li>
-          <li><a href="../policy/index.html"><span class="i18n-en">Policy &amp; Insights</span><span class="i18n-ha">Manufofi &amp; Bayanai</span></a></li>
-        </ul>
-      </div>
-      <div>
-        <h4><span class="i18n-en">Engage</span><span class="i18n-ha">Shiga</span></h4>
-        <ul>
-          <li><a href="../get-involved/index.html"><span class="i18n-en">Volunteer</span><span class="i18n-ha">Sa Kai</span></a></li>
-          <li><a href="../get-involved/partner.html"><span class="i18n-en">Partner with us</span><span class="i18n-ha">Yi Hadin Gwiwa Da Mu</span></a></li>
-          <li><a href="../get-involved/donate.html"><span class="i18n-en">Donate</span><span class="i18n-ha">Bayar da Tallafi</span></a></li>
-          <li><a href="../citizen/report.html"><span class="i18n-en">Report an issue</span><span class="i18n-ha">Bayar da rahoton matsala</span></a></li>
-          <li><a href="../media/index.html"><span class="i18n-en">Newsroom</span><span class="i18n-ha">Dakin Labarai</span></a></li>
-        </ul>
-      </div>
-      <div>
-        <h4><span class="i18n-en">Contact</span><span class="i18n-ha">Tuntube Mu</span></h4>
-        <ul>
-          <li><span class="i18n-en">Bauchi State, Nigeria</span><span class="i18n-ha">Jihar Bauchi, Najeriya</span></li>
-          <li><a href="tel:+2348169923037">+234 816 992 3037</a></li>
-          <li><a href="mailto:info@weaidinitiative.org">info@weaidinitiative.org</a></li>
-          <li><a href="../legal/legal-notice.html"><span class="i18n-en">Legal Notice</span><span class="i18n-ha">Sanarwar Doka</span></a></li>
-          <li><a href="../legal/privacy.html"><span class="i18n-en">Privacy Policy</span><span class="i18n-ha">Manufar Sirri</span></a></li>
-        </ul>
-      </div>
+      <div><h4><span class="i18n-en">Explore</span><span class="i18n-ha">Bincika</span></h4><ul><li><a href="../about.html"><span class="i18n-en">About</span><span class="i18n-ha">Game da Mu</span></a></li><li><a href="../impact/index.html"><span class="i18n-en">Impact Areas</span><span class="i18n-ha">Yankunan Tasiri</span></a></li><li><a href="../initiatives/index.html"><span class="i18n-en">Initiatives</span><span class="i18n-ha">Shirye-shirye</span></a></li><li><a href="../citizen/index.html"><span class="i18n-en">The Citizen</span><span class="i18n-ha">Mai Kasa</span></a></li><li><a href="../policy/index.html"><span class="i18n-en">Policy &amp; Insights</span><span class="i18n-ha">Manufofi &amp; Bayanai</span></a></li></ul></div>
+      <div><h4><span class="i18n-en">Engage</span><span class="i18n-ha">Shiga</span></h4><ul><li><a href="../get-involved/index.html"><span class="i18n-en">Volunteer</span><span class="i18n-ha">Sa Kai</span></a></li><li><a href="../get-involved/partner.html"><span class="i18n-en">Partner with us</span><span class="i18n-ha">Yi Hadin Gwiwa Da Mu</span></a></li><li><a href="../get-involved/donate.html"><span class="i18n-en">Donate</span><span class="i18n-ha">Bayar da Tallafi</span></a></li><li><a href="../citizen/report.html"><span class="i18n-en">Report an issue</span><span class="i18n-ha">Bayar da rahoton matsala</span></a></li><li><a href="../media/index.html"><span class="i18n-en">Newsroom</span><span class="i18n-ha">Dakin Labarai</span></a></li></ul></div>
+      <div><h4><span class="i18n-en">Contact</span><span class="i18n-ha">Tuntube Mu</span></h4><ul><li><span class="i18n-en">Bauchi State, Nigeria</span><span class="i18n-ha">Jihar Bauchi, Najeriya</span></li><li><a href="tel:+2348169923037">+234 816 992 3037</a></li><li><a href="mailto:info@weaidinitiative.org">info@weaidinitiative.org</a></li><li><a href="../legal/legal-notice.html"><span class="i18n-en">Legal Notice</span><span class="i18n-ha">Sanarwar Doka</span></a></li><li><a href="../legal/privacy.html"><span class="i18n-en">Privacy Policy</span><span class="i18n-ha">Manufar Sirri</span></a></li></ul></div>
     </div>
     <div class="footer-meta">
       <div>&copy; <span id="yr">2025</span> We Aid Initiative. <span class="i18n-en">All rights reserved.</span><span class="i18n-ha">An mallaki dukan hakkoki.</span></div>
@@ -114,5 +221,99 @@
 </footer>
 <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
 <script src="../assets/js/site.js"></script>
+
+<!-- LIVE DATA HUB -->
+<script>
+(function() {
+  const STORAGE_KEY = 'weaid_citizen_reports';
+  function loadReports() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+    catch(e) { return []; }
+  }
+  function renderHub() {
+    const reports = loadReports();
+    const total = reports.length;
+    document.getElementById('stat-total').textContent = total.toLocaleString();
+    document.getElementById('csv-row-count').textContent = total.toLocaleString();
+    if (total === 0) return;
+    const inProg = reports.filter(r => ['In Progress', 'Resolved'].includes(r.status)).length;
+    document.getElementById('stat-resolved').textContent = inProg.toLocaleString();
+    const cats = {}; reports.forEach(r => { cats[r.category] = (cats[r.category] || 0) + 1; });
+    document.getElementById('stat-categories').textContent = Object.keys(cats).length;
+    const locs = new Set(); reports.forEach(r => { if (r.location) locs.add(r.location.trim().toLowerCase()); });
+    document.getElementById('stat-locations').textContent = locs.size;
+    const sortedCats = Object.entries(cats).sort((a,b) => b[1] - a[1]);
+    const max = sortedCats[0][1];
+    document.getElementById('category-bars').innerHTML = sortedCats.map(([cat, n]) => `
+      <div class="bar-row">
+        <div class="bar-label">${cat}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(n/max*100).toFixed(0)}%"></div></div>
+        <div class="bar-count">${n}</div>
+      </div>`).join('');
+    const statuses = ['Submitted', 'Under Review', 'Escalated', 'In Progress', 'Resolved'];
+    const statusClasses = {'Submitted':'s-submitted','Under Review':'s-review','Escalated':'s-escalated','In Progress':'s-progress','Resolved':'s-resolved'};
+    const counts = {}; statuses.forEach(s => counts[s] = 0);
+    reports.forEach(r => { if (counts.hasOwnProperty(r.status)) counts[r.status]++; });
+    const statusMax = Math.max(...Object.values(counts), 1);
+    document.getElementById('status-bars').innerHTML = statuses.map(s => `
+      <div class="bar-row">
+        <div class="bar-label"><span class="status-pill ${statusClasses[s]}">${s}</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(counts[s]/statusMax*100).toFixed(0)}%; background: linear-gradient(90deg, var(--navy) 0%, var(--red) 100%);"></div></div>
+        <div class="bar-count">${counts[s]}</div>
+      </div>`).join('');
+    const latest = Math.max(...reports.map(r => r.created || 0));
+    const mins = Math.floor((Date.now() - latest) / 60000);
+    document.getElementById('last-updated').textContent = mins < 1 ? 'just now' : (mins < 60 ? `${mins}m ago` : `${Math.floor(mins/60)}h ago`);
+  }
+  document.getElementById('download-csv')?.addEventListener('click', () => {
+    const reports = loadReports();
+    if (!reports.length) {
+      alert('No reports in the dataset yet. Be the first — submit a report via The Citizen → Report an Issue.');
+      return;
+    }
+    const headers = ['tracking_id', 'category', 'location', 'description', 'status', 'submitted_at'];
+    const rows = reports.map(r => [
+      r.id, r.category, r.location || '',
+      (r.description || '').replace(/"/g, '""').replace(/\n/g, ' '),
+      r.status, new Date(r.created).toISOString(),
+    ]);
+    const csv = [headers, ...rows].map(row => row.map(c => `"${c}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `weaid-citizen-reports-${new Date().toISOString().slice(0,10)}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+  document.getElementById('notify-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const banner = document.getElementById('notify-confirm');
+    const btn = form.querySelector('button[type="submit"]');
+    const orig = btn.innerHTML;
+    btn.disabled = true; btn.innerHTML = 'Sending…';
+    try {
+      const resp = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
+      if (resp.ok) {
+        banner.textContent = '✓ You\'re on the list. We\'ll email you when the first brief publishes.';
+        banner.style.display = 'block';
+        form.reset();
+      } else {
+        banner.textContent = 'Something went wrong. Please try again or email info@weaidinitiative.org';
+        banner.style.background = '#FBECE9'; banner.style.color = '#962E22'; banner.style.display = 'block';
+      }
+    } catch (err) {
+      banner.textContent = 'Network error. Please try again.';
+      banner.style.background = '#FBECE9'; banner.style.color = '#962E22'; banner.style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.innerHTML = orig;
+    }
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    renderHub();
+    setInterval(renderHub, 5000);
+  });
+})();
+</script>
 </body>
 </html>
