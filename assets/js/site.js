@@ -2,6 +2,35 @@
 // WE AID INITIATIVE — site behaviour (with full EN/HA translation)
 // =====================================================
 
+// ---------- Auto-inject sticky "Report an issue" floating button ----------
+// Appears on every page except the report page itself and citizen sub-pages
+// (where the CTA already lives prominently in the hero).
+(function injectReportFAB() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const path = location.pathname;
+    if (path.includes('/citizen/')) {
+      document.body.classList.add('is-citizen-page');
+      return;
+    }
+    // Compute the right relative path to citizen/report.html from current depth
+    const depth = path.split('/').filter(p => p && !p.endsWith('.html')).length;
+    const prefix = depth === 0 ? '' : '../'.repeat(depth);
+    const href = prefix + 'citizen/report.html';
+    const isHa = (document.documentElement.lang === 'ha') ||
+                 (() => { try { return localStorage.getItem('weaid_lang') === 'ha'; } catch(e) { return false; } })();
+    const fab = document.createElement('a');
+    fab.className = 'report-fab';
+    fab.href = href;
+    fab.setAttribute('aria-label', 'Report an issue');
+    fab.innerHTML = `
+      <span class="pulse"></span>
+      <span class="i18n-en">Report an issue</span><span class="i18n-ha">Bayar da rahoto</span>
+    `;
+    document.body.appendChild(fab);
+  });
+})();
+
+
 // ---------- Copy-to-clipboard for account numbers ----------
 (function initCopyButtons() {
   document.addEventListener('click', async (e) => {

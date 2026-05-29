@@ -440,7 +440,79 @@ body { background: var(--bg); }
 /* ---------- 22. Selection — match brand ---------- */
 ::selection { background: var(--red); color: #fff; text-shadow: none; }
 
-/* ---------- 23. Honour reduced motion ---------- */
+/* ---------- 23. Sticky floating "Report an Issue" CTA ---------- */
+.report-fab {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--red) 0%, #962e22 100%);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.94rem;
+  text-decoration: none;
+  box-shadow:
+    0 10px 28px -8px rgba(192, 57, 43, 0.55),
+    0 4px 12px -2px rgba(0,0,0,0.15);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s;
+}
+.report-fab:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 18px 36px -8px rgba(192, 57, 43, 0.65),
+    0 6px 14px -2px rgba(0,0,0,0.2);
+  text-decoration: none;
+  color: #fff;
+}
+.report-fab .pulse {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 0 rgba(255,255,255,.8);
+  animation: fabPulse 2s infinite;
+}
+@keyframes fabPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,.8); }
+  70% { box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+@media (max-width: 600px) {
+  .report-fab {
+    bottom: 16px;
+    right: 16px;
+    padding: 12px 18px;
+    font-size: 0.86rem;
+  }
+}
+/* Don't show on the report page itself */
+body.is-report-page .report-fab,
+body.is-citizen-page .report-fab { display: none; }
+
+/* ---------- 24. Utility-bar Report link ---------- */
+.utility-bar .util-report {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red);
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: .76rem;
+  font-weight: 600;
+  margin-right: 6px;
+  transition: background .2s;
+}
+.utility-bar .util-report:hover {
+  background: var(--red-dark);
+  text-decoration: none;
+  color: #fff;
+}
+
+/* ---------- 99. Honour reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .stat::before,
   .cta-strip::after { animation: none; }
